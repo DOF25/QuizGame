@@ -11,7 +11,7 @@ import UIKit
 
 protocol GameControllerDelegate: AnyObject {
 
-    func gameDidEndWith(_ result: Int, questionsCount: Int)
+    func gameDidEndWith(_ result: Double, questionsCount: Double)
 }
 
 final class GameController: UIViewController {
@@ -24,7 +24,8 @@ final class GameController: UIViewController {
 
     private var questions = [Question]()
     private var numberOfQuestion = 0
-    private var solvedQuestions = 0
+    private var solvedQuestions = 0.0
+
 
     private let questionLabel: UILabel = {
         let label = UILabel()
@@ -93,6 +94,15 @@ final class GameController: UIViewController {
 
 
 //MARK: - Life Cycle
+
+    init(delegate: GameControllerDelegate? = nil ) {
+        self.delegate = delegate
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -211,6 +221,9 @@ final class GameController: UIViewController {
         }
         else {
 
+            delegate?.gameDidEndWith(solvedQuestions, questionsCount: Double(questions.count))
+            Game.shared.addRecord()
+            Game.shared.gameSession = nil
             congratLabel.alpha = 1
             returnButton.alpha = 1
             answerButton1.removeTarget(self, action: #selector(answerQuestion(_:)), for: .touchUpInside)
@@ -230,8 +243,9 @@ final class GameController: UIViewController {
 
         } else {
             
-            delegate?.gameDidEndWith(solvedQuestions, questionsCount: questions.count)
-            solvedQuestions = 0
+            delegate?.gameDidEndWith(solvedQuestions, questionsCount: Double(questions.count))
+            Game.shared.addRecord()
+            Game.shared.gameSession = nil
             let alert = UIAlertController(title: "Вы проиграли!", message: "Попробуйте снова", preferredStyle: .alert)
             let action = UIAlertAction(title: "Вернуться в главное меню", style: .default) { [weak self] action in
                 guard let self = self else { return }
@@ -247,8 +261,7 @@ final class GameController: UIViewController {
     @objc func backToMenu() {
 
         if returnButton.alpha == 1 {
-            let startController = StartController()
-            present(startController, animated: true)
+            self.dismiss(animated: true)
         }
 
     }

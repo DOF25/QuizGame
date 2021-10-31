@@ -7,18 +7,40 @@
 
 import UIKit
 
-struct Record {
-    let result: Int
-    let questionsCount: Int
-    let data: Data
+struct Record: Codable {
+    let percentage: Int
+    let date: Date
 }
 
 final class Game {
 
     static let shared = Game()
 
-    let gameSession: GameSession?
-    var records = [Record]()
+    var gameSession: GameSession? = nil
 
-    private init() {}
+    private let resultsCareTaker = ResultsCareTaker()
+
+    private(set) var records = [Record]() {
+        didSet {
+            resultsCareTaker.save(records)
+        }
+    }
+
+    private init() {
+        self.records = self.resultsCareTaker.upload()
+    }
+
+    func addRecord() {
+
+        guard let result = gameSession?.result,
+              let questionsCount = gameSession?.questionsCount else { return }
+        let percentage = Int((result / questionsCount) * 100)
+        let record = Record(percentage: percentage, date: Date())
+        self.records.append(record)
+    }
+
+    func clearRecords() {
+
+        self.records.removeAll()
+    }
 }

@@ -15,8 +15,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
         window = UIWindow(frame: UIScreen.main.bounds)
-        let viewController = StartController()
-        window?.rootViewController = viewController
+        let navigationController = UINavigationController(rootViewController: StartController())
+        navigationController.modalPresentationStyle = .fullScreen
+        navigationController.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationController.navigationBar.shadowImage = UIImage()
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
 
         guard let windowScene = (scene as? UIWindowScene) else { return }

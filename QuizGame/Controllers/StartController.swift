@@ -61,12 +61,22 @@ final class StartController : UIViewController {
             resultsButton.heightAnchor.constraint(equalToConstant: 30),
             resultsButton.widthAnchor.constraint(equalTo: startGameButton.widthAnchor)
         ])
+
+        resultsButton.addTarget(self, action: #selector(showRecords), for: .touchUpInside)
     }
 
     @objc func startGame() {
 
-        let gameController = GameController()
+        let gameSession = GameSession()
+        Game.shared.gameSession = gameSession
+        let gameController = GameController(delegate: gameSession)
         present(gameController, animated: true)
+    }
+
+    @objc func showRecords() {
+
+        let recordsController = RecordsController()
+        present(recordsController, animated: true)
     }
 
 
