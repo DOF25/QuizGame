@@ -7,19 +7,18 @@
 
 import UIKit
 
-protocol QuestionDelegate: AnyObject {
-    func addQuestions(_ questions: [Question])
-}
 
 final class AddQuestionsController: UIViewController {
 
 //MARK: - Public property
 
-    weak var delegate: QuestionDelegate?
-
 //MARK: - Private property
 
-    private var userQuestions = [Question]()
+    private var userQuestions = [Question]() {
+        didSet {
+            Game.shared.questionsCareTaker.save(userQuestions)
+        }
+    }
 
     private let questionLabel: UILabel = {
         let label = UILabel()
@@ -100,15 +99,16 @@ final class AddQuestionsController: UIViewController {
 
 //MARK: - Life Cycle
 
-    init(delegate: QuestionDelegate) {
-        self.delegate = delegate
+    init() {
+        self.userQuestions = Game.shared.questionsCareTaker.upload()
         super.init(nibName: nil, bundle: nil)
     }
-    
+
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -212,7 +212,6 @@ final class AddQuestionsController: UIViewController {
 
         self.userQuestions.append(question)
         Game.shared.questionsCareTaker.save(userQuestions)
-        
-        delegate?.addQuestions(userQuestions)
+
     }
 }

@@ -319,13 +319,3 @@ final class GameController: UIViewController {
 
     }
 }
-
-//MARK: - Question Delegate
-
-extension GameController: QuestionDelegate {
-
-    func addQuestions(_ questions: [Question]) {
-        self.questions.append(contentsOf: questions)
-    }
-
-}

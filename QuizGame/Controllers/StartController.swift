@@ -133,7 +133,7 @@ final class StartController : UIViewController {
 
     @objc func goToAddQuestionsController() {
 
-        let addQuestionsController = AddQuestionsController(delegate: GameController())
+        let addQuestionsController = AddQuestionsController()
         present(addQuestionsController, animated: true)
 
     }
