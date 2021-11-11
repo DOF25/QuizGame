@@ -24,6 +24,8 @@
 		E79A3BFF2732C55200159F6E /* InOrderStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A3BFE2732C55200159F6E /* InOrderStrategy.swift */; };
 		E79A3C012732C82A00159F6E /* RandomOrderStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A3C002732C82A00159F6E /* RandomOrderStrategy.swift */; };
 		E79A3C04273CCB8300159F6E /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A3C03273CCB8200159F6E /* Observer.swift */; };
+		E79A3C06273D66DA00159F6E /* AddQuestionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A3C05273D66DA00159F6E /* AddQuestionsController.swift */; };
+		E79A3C0A273D7EA100159F6E /* QuestionsCareTaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A3C09273D7EA100159F6E /* QuestionsCareTaker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		E79A3BFE2732C55200159F6E /* InOrderStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOrderStrategy.swift; sourceTree = "<group>"; };
 		E79A3C002732C82A00159F6E /* RandomOrderStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomOrderStrategy.swift; sourceTree = "<group>"; };
 		E79A3C03273CCB8200159F6E /* Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
+		E79A3C05273D66DA00159F6E /* AddQuestionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuestionsController.swift; sourceTree = "<group>"; };
+		E79A3C09273D7EA100159F6E /* QuestionsCareTaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsCareTaker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +82,7 @@
 		E79A3BC9272ACF8D00159F6E /* QuizGame */ = {
 			isa = PBXGroup;
 			children = (
+				E79A3C08273D7E8B00159F6E /* QuestionsCareTaker */,
 				E79A3C02273CCB6A00159F6E /* Observer */,
 				E79A3BF927318AEC00159F6E /* OrderStrategy */,
 				E79A3BF7272D85FC00159F6E /* CustomCells */,
@@ -102,6 +107,7 @@
 				E79A3BE6272AE6F600159F6E /* GameController.swift */,
 				E79A3BEE272D6FB900159F6E /* RecordsController.swift */,
 				E79A3BFC27318CA400159F6E /* SettingsController.swift */,
+				E79A3C05273D66DA00159F6E /* AddQuestionsController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -162,6 +168,14 @@
 				E79A3C03273CCB8200159F6E /* Observer.swift */,
 			);
 			path = Observer;
+			sourceTree = "<group>";
+		};
+		E79A3C08273D7E8B00159F6E /* QuestionsCareTaker */ = {
+			isa = PBXGroup;
+			children = (
+				E79A3C09273D7EA100159F6E /* QuestionsCareTaker.swift */,
+			);
+			path = QuestionsCareTaker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -239,6 +253,7 @@
 				E79A3BEF272D6FB900159F6E /* RecordsController.swift in Sources */,
 				E79A3BF4272D76E400159F6E /* ResultsCareTaker.swift in Sources */,
 				E79A3BF6272D85F600159F6E /* CellForRecords.swift in Sources */,
+				E79A3C0A273D7EA100159F6E /* QuestionsCareTaker.swift in Sources */,
 				E79A3BCF272ACF8D00159F6E /* StartController.swift in Sources */,
 				E79A3BEB272C0D8100159F6E /* Game.swift in Sources */,
 				E79A3BE7272AE6F600159F6E /* GameController.swift in Sources */,
@@ -248,6 +263,7 @@
 				E79A3BFB27318B7400159F6E /* OrderStrategy.swift in Sources */,
 				E79A3BCB272ACF8D00159F6E /* AppDelegate.swift in Sources */,
 				E79A3BCD272ACF8D00159F6E /* SceneDelegate.swift in Sources */,
+				E79A3C06273D66DA00159F6E /* AddQuestionsController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

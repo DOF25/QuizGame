@@ -20,6 +20,8 @@ final class Game {
 
     var typeOfOrder: Order?
 
+    let questionsCareTaker = QuestionsCareTaker()
+
 //MARK: - Private Property
 
     private let resultsCareTaker = ResultsCareTaker()

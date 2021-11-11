@@ -24,7 +24,9 @@ final class GameController: UIViewController {
 
 //MARK: - Private property
 
+    private let questionsCareTaker = QuestionsCareTaker()
     private var questions = [Question]()
+    
     private var numberOfQuestion = 0
     private var solvedQuestions = 0.0
 
@@ -113,6 +115,7 @@ final class GameController: UIViewController {
     init(delegate: GameControllerDelegate? = nil) {
         self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
+        self.questions = Game.shared.questionsCareTaker.upload()
     }
 
     required init?(coder: NSCoder) {
@@ -124,6 +127,7 @@ final class GameController: UIViewController {
 
         view.backgroundColor = .black
         addQuestions()
+        print(questions.count)
         useSettingsOnQuestions()
         typeOfOrder.makeChoosenOrder(questions: questions) { [weak self] questions in
             guard let self = self else { return }
@@ -215,19 +219,19 @@ final class GameController: UIViewController {
 //MARK: Setup Questions
 
     private func addQuestions() {
-        questions.append(Question(question: "Вопрос 1. Самое глубокое озеро в мире?",
+        questions.append(Question(question: "Самое глубокое озеро в мире?",
                                   possibleAnswers: ["Байкал","Селигер","Каспийское море","Титикака"],
                                   rightAnswerIndex: 0))
-        questions.append(Question(question: "Вопрос 2. Как называется набор закусок в Восточном Средиземноморье?",
+        questions.append(Question(question: "Как называется набор закусок в Восточном Средиземноморье?",
                                   possibleAnswers: ["Низе","Рафл","Мезе","Рован"],
                                   rightAnswerIndex: 2))
-        questions.append(Question(question: "Вопрос 3. Как по-другому называется внешняя поверхность сердечной мышцы человека?",
+        questions.append(Question(question: "Как по-другому называется внешняя поверхность сердечной мышцы человека?",
                                   possibleAnswers: ["Сердечная сумка","Сердечный мешок","Сердечный карман","Сердцеточие"],
                                   rightAnswerIndex: 0))
-        questions.append(Question(question: "Вопрос 4. Как называется самый древний континент?",
+        questions.append(Question(question: "Как называется самый древний континент?",
                                   possibleAnswers: ["Евразия","Лавразия","Гондвана","Пангея"],
                                   rightAnswerIndex: 3))
-        questions.append(Question(question: "Вопрос 5. Китай, Индия и Шри-Ланка являются тремя крупнейшими производителями чая в мире. Какая страна четвертая?",
+        questions.append(Question(question: "Китай, Индия и Шри-Ланка являются тремя крупнейшими производителями чая в мире. Какая страна четвертая?",
                                   possibleAnswers: ["ЮАР","Перу","Кения","Япония"],
                                   rightAnswerIndex: 2))
     }
@@ -314,4 +318,14 @@ final class GameController: UIViewController {
         }
 
     }
+}
+
+//MARK: - Question Delegate
+
+extension GameController: QuestionDelegate {
+
+    func addQuestions(_ questions: [Question]) {
+        self.questions.append(contentsOf: questions)
+    }
+
 }

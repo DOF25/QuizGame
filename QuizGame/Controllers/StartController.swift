@@ -36,6 +36,15 @@ final class StartController : UIViewController {
         return button
     }()
 
+    private let addQuestionsButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Добавить Вопрос", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .black
+        return button
+    }()
+
 
 //MARK: - Life Cycle
 
@@ -46,6 +55,7 @@ final class StartController : UIViewController {
         setupStartGameButton()
         setupResultsButton()
         setupSettingsButton()
+        setupAddQuestionsButton()
     }
 
     private func setupStartGameButton() {
@@ -87,6 +97,19 @@ final class StartController : UIViewController {
         settingsButton.addTarget(self, action: #selector(pushSettingsController), for: .touchUpInside)
     }
 
+    private func setupAddQuestionsButton() {
+
+        view.addSubview(addQuestionsButton)
+        NSLayoutConstraint.activate([
+            addQuestionsButton.topAnchor.constraint(equalTo: settingsButton.bottomAnchor, constant: 10),
+            addQuestionsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            addQuestionsButton.heightAnchor.constraint(equalToConstant: 30),
+            addQuestionsButton.widthAnchor.constraint(equalTo: startGameButton.widthAnchor)
+        ])
+
+        addQuestionsButton.addTarget(self, action: #selector(goToAddQuestionsController), for: .touchUpInside)
+    }
+
     @objc func startGame() {
 
         let gameSession = GameSession()
@@ -106,6 +129,13 @@ final class StartController : UIViewController {
         let settingsController = SettingsController()
         present(settingsController, animated: true)
 //        navigationController?.pushViewController(settingsController, animated: true)
+    }
+
+    @objc func goToAddQuestionsController() {
+
+        let addQuestionsController = AddQuestionsController(delegate: GameController())
+        present(addQuestionsController, animated: true)
+
     }
 
 
