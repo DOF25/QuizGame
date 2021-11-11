@@ -12,6 +12,8 @@ import UIKit
 protocol GameControllerDelegate: AnyObject {
 
     func gameDidEndWith(_ result: Double, questionsCount: Double)
+
+    func solvedQuestions(_ result: Double)
 }
 
 final class GameController: UIViewController {
@@ -92,10 +94,23 @@ final class GameController: UIViewController {
         return button
     }()
 
+    private let questionNumberAndPercentageLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.backgroundColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .black
+        label.numberOfLines = 0
+        label.text = "5 50%"
+        return label
+    }()
+
+    private var typeOfOrder: OrderStrategy = InOrderStrategy()
+
 
 //MARK: - Life Cycle
 
-    init(delegate: GameControllerDelegate? = nil ) {
+    init(delegate: GameControllerDelegate? = nil) {
         self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
     }
@@ -108,10 +123,22 @@ final class GameController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .black
-        setupUI()
         addQuestions()
-        setupQuestionsAndAnswers(questions)
+        useSettingsOnQuestions()
+        typeOfOrder.makeChoosenOrder(questions: questions) { [weak self] questions in
+            guard let self = self else { return }
+            self.questions = questions
+        }
+        setupUI()
+        setupQuestionsAndAnswers()
+
+        Game.shared.gameSession?.result.addObserver(self, options: [.initial, .new]) { [weak self] result, _ in
+            guard let self = self else { return }
+            let percentage = Int((result / Double(self.questions.count)) * 100)
+            self.questionNumberAndPercentageLabel.text = "\(self.numberOfQuestion) \(percentage)%"
+        }
     }
+
 
 //MARK: - Setup UI Elements
 
@@ -177,6 +204,12 @@ final class GameController: UIViewController {
             returnButton.widthAnchor.constraint(equalToConstant: view.bounds.width / 2.5)
         ])
         returnButton.addTarget(self, action: #selector(backToMenu), for: .touchUpInside)
+
+        view.addSubview(questionNumberAndPercentageLabel)
+        NSLayoutConstraint.activate([
+            questionNumberAndPercentageLabel.topAnchor.constraint(equalTo: answerButton4.bottomAnchor, constant: 25),
+            questionNumberAndPercentageLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25)
+        ])
     }
 
 //MARK: Setup Questions
@@ -208,7 +241,16 @@ final class GameController: UIViewController {
         return false
     }
 
-    private func setupQuestionsAndAnswers(_ questions: [Question]) {
+    private func useSettingsOnQuestions() {
+
+        if Game.shared.typeOfOrder == .inOrder {
+            self.typeOfOrder = InOrderStrategy()
+        } else if Game.shared.typeOfOrder == .randomly {
+            self.typeOfOrder = RandomOrderStrategy()
+        }
+    }
+
+    private func setupQuestionsAndAnswers() {
 
         if numberOfQuestion < questions.count {
 
@@ -219,8 +261,9 @@ final class GameController: UIViewController {
             answerButton3.setTitle(question.possibleAnswers[2], for: .normal)
             answerButton4.setTitle(question.possibleAnswers[3], for: .normal)
         }
-        else {
 
+        else {
+            
             delegate?.gameDidEndWith(solvedQuestions, questionsCount: Double(questions.count))
             Game.shared.addRecord()
             Game.shared.gameSession = nil
@@ -230,8 +273,11 @@ final class GameController: UIViewController {
             answerButton2.removeTarget(self, action: #selector(answerQuestion(_:)), for: .touchUpInside)
             answerButton3.removeTarget(self, action: #selector(answerQuestion(_:)), for: .touchUpInside)
             answerButton4.removeTarget(self, action: #selector(answerQuestion(_:)), for: .touchUpInside)
+
         }
     }
+
+//MARK: - Logic of answer
 
     @objc func answerQuestion(_ sender: UIButton) {
 
@@ -239,7 +285,8 @@ final class GameController: UIViewController {
 
             solvedQuestions += 1
             numberOfQuestion += 1
-            setupQuestionsAndAnswers(questions)
+            delegate?.solvedQuestions(solvedQuestions)
+            setupQuestionsAndAnswers()
 
         } else {
             
@@ -257,6 +304,8 @@ final class GameController: UIViewController {
         }
 
     }
+
+//MARK: - Back to StartController
 
     @objc func backToMenu() {
 

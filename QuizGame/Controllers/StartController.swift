@@ -27,6 +27,14 @@ final class StartController : UIViewController {
         button.backgroundColor = .black
         return button
     }()
+    private let settingsButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Настройки", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .black
+        return button
+    }()
 
 
 //MARK: - Life Cycle
@@ -37,13 +45,14 @@ final class StartController : UIViewController {
         view.backgroundColor = .black
         setupStartGameButton()
         setupResultsButton()
+        setupSettingsButton()
     }
 
     private func setupStartGameButton() {
 
         view.addSubview(startGameButton)
         NSLayoutConstraint.activate([
-            startGameButton.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height/2 - 70)),
+            startGameButton.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height/2 - 100)),
             startGameButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             startGameButton.heightAnchor.constraint(equalToConstant: 30),
             startGameButton.widthAnchor.constraint(equalToConstant: view.bounds.width - 100)
@@ -65,6 +74,19 @@ final class StartController : UIViewController {
         resultsButton.addTarget(self, action: #selector(showRecords), for: .touchUpInside)
     }
 
+    private func setupSettingsButton() {
+
+        view.addSubview(settingsButton)
+        NSLayoutConstraint.activate([
+            settingsButton.topAnchor.constraint(equalTo: resultsButton.bottomAnchor, constant: 10),
+            settingsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            settingsButton.heightAnchor.constraint(equalToConstant: 30),
+            settingsButton.widthAnchor.constraint(equalTo: startGameButton.widthAnchor)
+        ])
+
+        settingsButton.addTarget(self, action: #selector(pushSettingsController), for: .touchUpInside)
+    }
+
     @objc func startGame() {
 
         let gameSession = GameSession()
@@ -77,6 +99,13 @@ final class StartController : UIViewController {
 
         let recordsController = RecordsController()
         present(recordsController, animated: true)
+    }
+
+    @objc func pushSettingsController() {
+
+        let settingsController = SettingsController()
+        present(settingsController, animated: true)
+//        navigationController?.pushViewController(settingsController, animated: true)
     }
 
 

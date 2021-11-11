@@ -18,6 +18,10 @@ final class Game {
 
     var gameSession: GameSession? = nil
 
+    var typeOfOrder: Order?
+
+//MARK: - Private Property
+
     private let resultsCareTaker = ResultsCareTaker()
 
     private(set) var records = [Record]() {
@@ -34,7 +38,7 @@ final class Game {
 
         guard let result = gameSession?.result,
               let questionsCount = gameSession?.questionsCount else { return }
-        let percentage = Int((result / questionsCount) * 100)
+        let percentage = Int((result.value / questionsCount) * 100)
         let record = Record(percentage: percentage, date: Date())
         self.records.append(record)
     }
